@@ -1,5 +1,5 @@
 function minMaxAverage(...operands) {
-  let result = [Infinity, -Infinity, 0]; // [min, max, average]
+  let result = [Infinity, -Infinity, 0]; 
   let sum = 0;
   let counter = 0;
 
@@ -7,11 +7,11 @@ function minMaxAverage(...operands) {
     let operandA = operands[i];
 
     if (Array.isArray(operandA)) {
-      let [min, max, , subSum, subCounter] = minMaxAverage(...operandA); // Correct extraction
+      let [min, max, sumAr, counterAr] = minMaxArrayAverage(operandA); 
       if (min < result[0]) result[0] = min;
       if (max > result[1]) result[1] = max;
-      sum += subSum;
-      counter += subCounter;
+      sum += sumAr;
+      counter += counterAr;
     } else if (typeof operandA === "number") {
       if (operandA < result[0]) result[0] = operandA;
       if (operandA > result[1]) result[1] = operandA;
@@ -21,19 +21,42 @@ function minMaxAverage(...operands) {
   }
 
   result[2] = counter > 0 ? sum / counter : undefined; // Avoid division by zero
-  return [...result, sum, counter]; // Returning sum and count to handle recursion correctly
+  return result;
 }
 
-// Test cases
-let array1 = [1, 45, 101, -45];
-let array2 = [89, 0, 45];
-let result = minMaxAverage(1, 45, array2, 67, -800, array1);
+function minMaxArrayAverage(array) {
+  let sumAr = 0;
+  let counterAr = 0;
+  let min = Infinity;
+  let max = -Infinity;
 
-console.log(result); // Expected output: [-800, 101, average_value]
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] < min) min = array[i];
+    if (array[i] > max) max = array[i];
+    sumAr += array[i];
+    counterAr++;
+  }
 
-console.log(`The output of function "minMax" with numbers and arrays as arguments: (1, 900, [56, 7, -900], 90, 1000) will be: -900, 1000
-  ${minMaxAverage(1, 900, [56, 7, -900], 90, 1000)}`);
-console.log(`The output of function "minMax" with numbers and arrays as arguments: ([1, 900], -6, 7, 0, 90, [100, 90, -678]) will be: -678, 900
-  ${minMaxAverage([1, 900], -6, 7, 0, 90, [100, 90, -678])}`);
-console.log(`The output of function "minMax" with numbers and arrays as arguments: ([1, 2, 3]) will be: 1, 10, 4
-  ${minMaxAverage([1, 2, 3], 10)}`);
+  return [min, max, sumAr, counterAr];
+}
+
+let array1 = [1, 5, 11, -4];
+let array2 = [1, 2, 3];
+let mMax = minMaxAverage(2, array2, 6, 1, array1);
+console.log(mMax); 
+
+console.log(
+  `The output of function "minMaxAverage" with numbers and arrays as arguments: ([1, 2, 3], 10) will be: \n Min Value: ${
+    minMaxAverage([1, 2, 3], 10)[0]
+  } \n Max Value: ${minMaxAverage([1, 2, 3], 10)[1]} \n Average Value: ${
+    minMaxAverage([1, 2, 3], 10)[2]
+  }`
+);
+
+console.log(
+  `The output of function "minMaxAverage" with numbers and arrays as arguments: (1, 2, 3, 10, [8, -900], 0) will be: \n Min Value: ${
+    minMaxAverage(1, 2, 3, 10, [8, -900], 0)[0]
+  } \n Max Value: ${
+    minMaxAverage(1, 2, 3, 10, [8, -900], 0)[1]
+  } \n Average Value: ${minMaxAverage([1, 2, 3], 10)[2]}`
+);
