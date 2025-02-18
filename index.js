@@ -1,5 +1,5 @@
 function minMaxAverage(...operands) {
-  let result = [Infinity, -Infinity, 0]; 
+  let result = [Infinity, -Infinity, 0];
   let sum = 0;
   let counter = 0;
 
@@ -7,12 +7,12 @@ function minMaxAverage(...operands) {
     let operandA = operands[i];
 
     if (Array.isArray(operandA)) {
-      let [min, max, sumAr, counterAr] = minMaxArrayAverage(operandA); 
+      let [min, max, sumAr, counterAr] = minMaxArrayAverage(operandA);
       if (min < result[0]) result[0] = min;
       if (max > result[1]) result[1] = max;
       sum += sumAr;
       counter += counterAr;
-    } else if (typeof operandA === "number") {
+    } else if (operandA / operandA === 1) {
       if (operandA < result[0]) result[0] = operandA;
       if (operandA > result[1]) result[1] = operandA;
       sum += operandA;
@@ -20,7 +20,8 @@ function minMaxAverage(...operands) {
     }
   }
 
-  result[2] = counter > 0 ? sum / counter : undefined; // Avoid division by zero
+  result[2] = counter > 0 ? Math.round(sum / counter) : undefined;
+
   return result;
 }
 
@@ -40,23 +41,15 @@ function minMaxArrayAverage(array) {
   return [min, max, sumAr, counterAr];
 }
 
-let array1 = [1, 5, 11, -4];
-let array2 = [1, 2, 3];
-let mMax = minMaxAverage(2, array2, 6, 1, array1);
-console.log(mMax); 
+
+const result = minMaxAverage(1, 2, 3, 10, [8, -900], 0);
 
 console.log(
-  `The output of function "minMaxAverage" with numbers and arrays as arguments: ([1, 2, 3], 10) will be: \n Min Value: ${
-    minMaxAverage([1, 2, 3], 10)[0]
-  } \n Max Value: ${minMaxAverage([1, 2, 3], 10)[1]} \n Average Value: ${
-    minMaxAverage([1, 2, 3], 10)[2]
-  }`
+  `The output of function "minMaxAverage" with numbers and arrays as arguments: (1, 2, 3, 10, [8, -900], 0) will be: \n Min Value: ${result[0]} \n Max Value: ${result[1]} \n Average Value: ${result[2]}`
 );
 
+const result1 = minMaxAverage([1, 2], 3, 10, [8, -900], 0);
+
 console.log(
-  `The output of function "minMaxAverage" with numbers and arrays as arguments: (1, 2, 3, 10, [8, -900], 0) will be: \n Min Value: ${
-    minMaxAverage(1, 2, 3, 10, [8, -900], 0)[0]
-  } \n Max Value: ${
-    minMaxAverage(1, 2, 3, 10, [8, -900], 0)[1]
-  } \n Average Value: ${minMaxAverage([1, 2, 3], 10)[2]}`
+  `The output of function "minMaxAverage" with numbers and arrays as arguments: (1, 2, 3, 10, [8, -900], 0) will be: \n Min Value: ${result1[0]} \n Max Value: ${result1[1]} \n Average Value: ${result1[2]}`
 );
